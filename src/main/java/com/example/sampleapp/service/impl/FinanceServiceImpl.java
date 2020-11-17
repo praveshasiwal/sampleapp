@@ -39,7 +39,7 @@ public class FinanceServiceImpl implements FinanceService {
 		log.debug("FinanceServiceImpl::getBySector, start");
 		List<FinanceDTO> financeDTOs = financeRepository.findBySector(sector);
 		List<FinancePO> financePOs = new ArrayList<>();
-		if (null != financeDTOs && financeDTOs.isEmpty()) {
+		if (null != financeDTOs && !financeDTOs.isEmpty()) {
 			for (FinanceDTO financeDTO : financeDTOs) {
 				FinancePO financePO = new FinancePO();
 				BeanUtils.copyProperties(financeDTO, financePO);

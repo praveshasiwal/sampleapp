@@ -22,7 +22,7 @@ public class FinanceDTO implements Serializable {
 	private static final long serialVersionUID = -4431775939978862400L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "sector")

@@ -10,7 +10,7 @@ public class FinancePO implements Serializable {/**
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long testId;
+	private Long id;
 	private String sector;
 	private Integer numberOfFacilities;
 	private Long numberOfCustomer;
