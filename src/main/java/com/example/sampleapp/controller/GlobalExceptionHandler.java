@@ -21,6 +21,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException exception){
 		log.error(exception.getMessage(), exception);
+		return new ResponseEntity<String>(exception.getLocalizedMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<String> handleException(Exception exception){
+		log.error(exception.getMessage(), exception);
 		return new ResponseEntity<String>(exception.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

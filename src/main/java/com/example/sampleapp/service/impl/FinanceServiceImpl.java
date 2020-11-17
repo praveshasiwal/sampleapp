@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +11,7 @@ import com.example.sampleapp.dao.FinanceRepository;
 import com.example.sampleapp.model.FinanceDTO;
 import com.example.sampleapp.model.FinancePO;
 import com.example.sampleapp.service.FinanceService;
+import com.example.sampleapp.util.AppUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,12 +26,12 @@ public class FinanceServiceImpl implements FinanceService {
 	public FinancePO getRecord(Long id) {
 		log.debug("FinanceServiceImpl::getRecord, start");
 		Optional<FinanceDTO> optional = financeRepository.findById(id);
-		FinancePO financePO = null;
 		if (optional.isPresent()) {
 			FinanceDTO source = optional.get();
-			BeanUtils.copyProperties(source, financePO);
+			FinancePO financePO = AppUtils.copySourceToTarget(source, FinancePO.class);
+			return financePO;
 		}
-		return financePO;
+		throw new RuntimeException("Record Not Found");
 	}
 
 	@Override
@@ -41,23 +41,26 @@ public class FinanceServiceImpl implements FinanceService {
 		List<FinancePO> financePOs = new ArrayList<>();
 		if (null != financeDTOs && !financeDTOs.isEmpty()) {
 			for (FinanceDTO financeDTO : financeDTOs) {
-				FinancePO financePO = new FinancePO();
-				BeanUtils.copyProperties(financeDTO, financePO);
+				FinancePO financePO = AppUtils.copySourceToTarget(financeDTO, FinancePO.class);
 				financePOs.add(financePO);
 			}
+			return financePOs;
+		}else {
+			throw new RuntimeException("No Data Found");
 		}
-		return financePOs;
 	}
 
 	@Override
 	public FinancePO saveRecord(FinancePO financePO) {
 		log.debug("FinanceServiceImpl::saveRecord, start");
 		if (null != financePO) {
-			FinanceDTO financeDTO = new FinanceDTO();
-			BeanUtils.copyProperties(financePO, financeDTO);
+			FinanceDTO financeDTO = AppUtils.copySourceToTarget(financePO, FinanceDTO.class);
 			FinanceDTO responseFinanceDTO = financeRepository.save(financeDTO);
-			BeanUtils.copyProperties(responseFinanceDTO, financePO);
+			financePO = AppUtils.copySourceToTarget(responseFinanceDTO, FinancePO.class);
+			return financePO;
+		}else {
+			log.error("Invalid Content Recived");
+			throw new RuntimeException("Invalid Content Recived");
 		}
-		return financePO;
 	}
 }
