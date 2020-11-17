@@ -36,11 +36,20 @@ public class FinanceController {
 		return new ResponseEntity<>(financePO, HttpStatus.OK);
 	}
 	
-	@GetMapping
+	@GetMapping("/search")
 	public ResponseEntity<List<FinancePO>> getDatas(@RequestParam(name = "sector") String sector) {
 		log.info("FinanceController::getData call for {}", sector);
 		
 		List<FinancePO> financePOs = financeService.getBySector(sector);
+		
+		return new ResponseEntity<>(financePOs, HttpStatus.OK);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<FinancePO>> getAllData() {
+		log.info("FinanceController::getAllData call");
+		
+		List<FinancePO> financePOs = financeService.getAll();
 		
 		return new ResponseEntity<>(financePOs, HttpStatus.OK);
 	}

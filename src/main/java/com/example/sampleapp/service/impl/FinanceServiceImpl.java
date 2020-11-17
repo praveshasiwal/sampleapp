@@ -63,4 +63,20 @@ public class FinanceServiceImpl implements FinanceService {
 			throw new RuntimeException("Invalid Content Recived");
 		}
 	}
+
+	@Override
+	public List<FinancePO> getAll() {
+		log.debug("FinanceServiceImpl::getBySector, start");
+		List<FinanceDTO> financeDTOs = financeRepository.findAll();
+		List<FinancePO> financePOs = new ArrayList<>();
+		if (null != financeDTOs && !financeDTOs.isEmpty()) {
+			for (FinanceDTO financeDTO : financeDTOs) {
+				FinancePO financePO = AppUtils.copySourceToTarget(financeDTO, FinancePO.class);
+				financePOs.add(financePO);
+			}
+			return financePOs;
+		}else {
+			throw new RuntimeException("No Data Found");
+		}
+	}
 }
