@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.sampleapp.constant.AppConstants;
 import com.example.sampleapp.model.FinancePO;
 import com.example.sampleapp.service.FinanceService;
 
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("v1/finance")
+@RequestMapping(value = AppConstants.BASE_URL)
 public class FinanceController {
 	
 	@Autowired
